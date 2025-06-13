@@ -47,7 +47,7 @@ export function RouteMap() {
     return (
       <div
         className={`w-full ${
-          layoutMode === "result" ? "h-screen" : "h-80"
+          layoutMode === "result" ? "h-screen" : "h-10"
         } rounded-2xl bg-gradient-to-br from-primary/10 to-surface/30 flex items-center justify-center text-gray-400 dark:text-gray-500 text-sm`}
       >
         Plan a trip to see your route!
@@ -56,7 +56,7 @@ export function RouteMap() {
   }
 
   const stops = tripResult.stops;
-const routePoints: [number, number][] = tripResult.geometry || [];
+  const routePoints: [number, number][] = tripResult.geometry || [];
 
   return (
     <motion.div
