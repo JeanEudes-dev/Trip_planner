@@ -1,104 +1,122 @@
 # SpotterAI Trip Planner Backend
 
-A production-ready Django REST API for planning property-carrying truck routes with US Hours of Service (HOS) logic and ELD log sheet generation. Designed for remote assessment, deployable to AWS, Render, or Docker anywhere.
+REST API backend for SpotterAI’s US truck trip planning platform.
+
+- 🚚 **Route planning** via OpenRouteService (live geocoding/routing)
+- 🗺️ **Stops and route geometry** returned for map and ELD simulation
+- 📄 **Automatic ELD log sheet** generator (US DOT HOS compliant)
+- ⚡ **Robust error handling** for geocoding/routing/logic issues
 
 ---
 
 ## Features
 
-- Input: current, pickup, and dropoff locations + cycle hours
-- Calculates route, required stops, fueling, and rest breaks (HOS-compliant)
-- Outputs structured ELD logs for each day (ready for frontend graph)
-- Modern REST API with OpenAPI (Swagger/Redoc) docs
-- Admin for trips/logs/stops
-- Tests & Docker support
+- Plan a trip: Geocode, route calculation, all stops (pickup, dropoff, fuel/rest)
+- Returns real road-following geometry for frontend mapping
+- ELD log simulation for DOT Hours of Service, per day/segment
+- Admin via Django ORM (TripRequest, RouteStop, TripLog)
+- Extensible, production-ready error model
 
 ---
 
-## Quickstart (Docker)
+## Quick Start
+
+### 1. Install & Setup
 
 ```bash
-git clone <your_repo_url>
 cd backend
-cp .env.example .env  # or set DB vars directly
-# Set SECRET_KEY, ALLOWED_HOSTS, DATABASE_URL, etc.
-docker build -t spotterai-backend .
-docker run -p 8000:8000 spotterai-backend
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+```
+
+- Copy `.env.example` to `.env` and set your [OpenRouteService](https://openrouteservice.org/) API key:
+
+  ```
+  ORS_API_KEY=your-real-api-key
+  ```
+
+### 2. Run Migrations
+
+```bash
+python manage.py migrate
+```
+
+### 3. Start Backend
+
+```bash
+python manage.py runserver
 ```
 
 ---
 
-## API Endpoints
+## API Reference
 
-| Endpoint           | Method | Description                         |
-| ------------------ | ------ | ----------------------------------- |
-| /api/trips/create/ | POST   | Plan a trip (input locations/cycle) |
-| /api/trips/        | GET    | List previous trips                 |
-| /api/trips/<id>/   | GET    | Get one trip and its logs           |
-| /swagger/          | GET    | Interactive Swagger API docs        |
-| /redoc/            | GET    | Redoc API reference                 |
+Full OpenAPI/Swagger doc: see [`swagger.yaml`](./swagger.yaml) or `/api/docs/` if enabled.
 
----
+### Endpoints
 
-### Example: Plan a Trip
+- `POST /api/trips/create/` — Plan a new trip (see body in Swagger)
+- `GET /api/trips/{id}/` — Retrieve trip by id
+- `GET /api/trips/` — List recent trips
 
-Request (POST /api/trips/create/):
+### Main Data Model
+
+- **TripRequest**: Locations, cycle hours, meta, error status
+- **RouteStop**: Each stop on the route (pickup, dropoff, fuel, etc)
+- **TripLog**: Daily ELD log with status segments, per trip
+
+### Example Trip Creation Request
 
 ```json
 {
   "current_location": "Dallas, TX",
   "pickup_location": "Houston, TX",
   "dropoff_location": "Chicago, IL",
-  "current_cycle_hours": 0
+  "current_cycle_hours": 8
 }
 ```
 
-Response:
+### Example Trip Creation Response
 
 ```json
 {
   "id": 1,
-  "created_at": "2024-06-13T18:15:02Z",
+  "created_at": "2025-06-13T15:30:00Z",
   "current_location": "Dallas, TX",
   "pickup_location": "Houston, TX",
   "dropoff_location": "Chicago, IL",
-  "current_cycle_hours": 0,
-  "distance_miles": 1100,
-  "estimated_days": 2,
+  "current_cycle_hours": 8,
+  "distance_miles": 1200.7,
+  "estimated_days": 3,
   "status": "completed",
-  "logs": [
-    { "date": "2024-06-13", "segments": [ { "status": "off_duty", ... } ] },
-    ...
-  ],
-  "stops": [
-    { "stop_type": "pickup", "lat": ..., "lng": ... },
-    ...
-  ]
+  "logs": [...],
+  "stops": [...],
+  "geometry": [[32.7767,-96.7970],[29.7604,-95.3698],...]
 }
 ```
 
 ---
 
-## Tech Stack
+## Error Handling
 
-- Django 4, Django REST Framework, drf-yasg (Swagger)
-- PostgreSQL (or SQLite/dev)
-- Docker & Gunicorn
-- CORS enabled (frontend-friendly)
-
----
-
-## Dev Tips
-
-- Add real geocoding/routing APIs for production
-- See `trip_planner/services.py` for HOS logic
-- Customize the log graph output for your frontend
-- Use `/swagger/` to test API live
+- All geocoding/routing/logic errors return error info in the JSON response.
+- HTTP 400/413/422/500 used for meaningful errors.
+- Trip status and error_message are always updated in DB.
 
 ---
 
-## Author
+## Testing
 
-- **Jean-Eudes Assogba** ([GitHub](https://github.com/JeanEudes-dev))
-- [LinkedIn](https://www.linkedin.com/in/jeaneudes-assogba/) | [Email](mailto:jeaneudesdev@gmail.com)
+Use Postman or `curl` to test trip planning.
 
+```bash
+curl -X POST http://localhost:8000/api/trips/create/ \
+ -H "Content-Type: application/json" \
+ -d '{"current_location": "Atlanta, GA", "pickup_location": "Nashville, TN", "dropoff_location": "St. Louis, MO", "current_cycle_hours": 15}'
+```
+
+---
+
+## License
+
+MIT © Jean-Eudes Assogba
