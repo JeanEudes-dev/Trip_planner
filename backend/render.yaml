@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: spotterai-backend
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn backend.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: backend.settings
+      - key: ORS_API_KEY
+        sync: false 
+      - key: SECRET_KEY
+        sync: false
