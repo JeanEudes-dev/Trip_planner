@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create axios instance with base configuration
 const apiClient = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
+  baseURL: "https://spotter-trip-planner.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
