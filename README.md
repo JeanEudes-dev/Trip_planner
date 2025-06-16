@@ -1,4 +1,4 @@
-# SpotterAI Trip Planner 🚛
+# Trip Planner 🚛
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Django](https://img.shields.io/badge/Django-5.2.3-green.svg)](https://djangoproject.com/)
