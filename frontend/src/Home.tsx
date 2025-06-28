@@ -12,7 +12,7 @@ export default function Home() {
       {/* Header */}
       <header className="sticky top-0 z-20 bg-white/90 dark:bg-surface/90 shadow backdrop-blur flex items-center px-6 h-16">
         <span className="font-extrabold text-lg tracking-tight text-primary mr-4">
-          SpotterAI Trip Planner
+          Trip Planner
         </span>
         <nav className="ml-auto flex items-center space-x-2">
           <AboutDrawer />

@@ -1,6 +1,6 @@
-# SpotterAI Trip Planner Backend
+# Trip Planner Backend
 
-REST API backend for SpotterAI’s US truck trip planning platform.
+REST API backend for US truck trip planning platform.
 
 - 🚚 **Route planning** via OpenRouteService (live geocoding/routing)
 - 🗺️ **Stops and route geometry** returned for map and ELD simulation

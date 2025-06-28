@@ -1,6 +1,6 @@
 {
-  "name": "SpotterAI Trip Planner",
-  "short_name": "SpotterAI",
+  "name": "Trip Planner",
+  "short_name": "TripPlanner",
   "description": "Professional trucking route planner with HOS compliance and ELD log generation",
   "start_url": "/",
   "display": "standalone",
@@ -45,14 +45,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Desktop view of SpotterAI Trip Planner"
+      "label": "Desktop view of Trip Planner"
     },
     {
       "src": "/screenshot-mobile.png",
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Mobile view of SpotterAI Trip Planner"
+      "label": "Mobile view of Trip Planner"
     }
   ]
 }

@@ -38,7 +38,7 @@ export function AboutDrawer() {
               About & Help
             </Dialog.Title>
             <p className="text-base mb-2">
-              <strong>SpotterAI Trip Planner</strong> is a smart full-stack demo
+              <strong>Trip Planner</strong> is a smart full-stack demo
               for property-carrying truckers. Enter your route, and our AI plans
               a legal drive under US <b>Hours of Service (HOS)</b> rules, with
               ELD log sheets and map stops.
